@@ -3,7 +3,7 @@ from locations.models import Location
 
 
 class WeatherData(models.Model):
-    locations = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='data')
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='data')
     temperature = models.FloatField()
     humidity = models.FloatField()
     pressure = models.FloatField()
