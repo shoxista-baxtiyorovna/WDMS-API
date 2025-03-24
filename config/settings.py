@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'locations',
     'weather',
     'forecast',
+    'analytics',
 ]
 
 MIDDLEWARE = [
