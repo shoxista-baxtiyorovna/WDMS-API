@@ -3,4 +3,5 @@ from .models import Location
 
 
 class LocationSerializer(serializers.ModelSerializer):
-    pass
+    class Meta:
+        model = Location
