@@ -2,13 +2,13 @@ from rest_framework import serializers
 from .models import Forecast
 
 
-class ForecastLocation(serializers.ModelSerializer):
+class ForecastLocation(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(read_only=True)
 
 class ForecastSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Forecast.objects.all()
+        model = Forecast
         fields = [
             'id',
             'location',
@@ -18,6 +18,30 @@ class ForecastSerializer(serializers.ModelSerializer):
             'humidity',
             'precipitation_probability',
             'wind_speed',
-            'wind_description',
-            ''
+            'wind_direction',
+            'created_at'
         ]
+        extra_kwargs = {
+            'location': {
+                'required': False
+            },
+            'forecast_date': {
+                'required': False
+            }
+        }
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['location'] = ForecastLocation(instance.location).data
+        return data
+
+class ForecastByLocationSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    forecast_date = serializers.DateField(read_only=True)
+    temperature_min = serializers.FloatField(read_only=True)
+    temperature_max = serializers.FloatField(read_only=True)
+    humidity = serializers.FloatField(read_only=True)
+    precipitation_probability = serializers.FloatField(read_only=True)
+    wind_speed = serializers.FloatField(read_only=True)
+    wind_direction = serializers.FloatField(read_only=True)
+    created_at = serializers.DateTimeField(read_only=True)
